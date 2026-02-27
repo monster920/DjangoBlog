@@ -1,0 +1,39 @@
+{% load i18n %}
+
+<nav id="site-navigation" class="main-navigation" role="navigation">
+    <div class="menu-container">
+        <ul class="nav-menu">
+            <li class="menu-item home-item">
+                <a href="/" title="{{ SITE_NAME }}" rel="home">
+                    <i class="fa fa-home"></i>
+                    <span>{% trans 'index' %}</span>
+                </a>
+            </li>
+
+            {% load blog_tags %}
+            {% query nav_category_list parent_category=None as root_categorys %}
+            {% for node in root_categorys %}
+                <li class="menu-item">
+                    <a href="{{ node.get_absolute_url }}">
+                        {{ node.name }}
+                    </a>
+                </li>
+            {% endfor %}
+            {% if nav_pages %}
+                {% for node in nav_pages %}
+                    <li class="menu-item">
+                        <a href="{{ node.get_absolute_url }}">
+                            {{ node.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+            <li class="menu-item archive-item">
+                <a href="{% url "blog:archives" %}">
+                    <i class="fa fa-archive"></i>
+                    <span>{% trans 'Article archive' %}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav><!-- #site-navigation -->

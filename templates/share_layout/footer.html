@@ -1,0 +1,43 @@
+<!-- 页脚区域 -->
+<footer id="colophon" role="contentinfo">
+    <div class="site-info">
+        <p class="copyright">
+            <i class="fa fa-copyright"></i> Copyright {{ CURRENT_YEAR }}
+            <a href="/" target="blank">{{ SITE_NAME }}</a>
+        </p>
+        <div class="footer-links">
+            <a href="" title="SiteMap" target="_blank">
+                <i class="fa fa-sitemap"></i> SiteMap
+            </a>
+            <a href="" title="RSS Feed" target="_blank">
+                <i class="fa fa-rss"></i> RSS Feed
+            </a>
+            <a href="/links.html" title="相关链接" rel="nofollow" target="blank">
+                <i class="fa fa-link"></i> 相关链接
+            </a>
+        </div>
+        <div class="powered-by">
+            <p>Powered by 
+                <a href="https://www.djangoproject.com/" rel="nofollow" target="blank">Django</a>
+            </p>
+        </div>
+    {% if BEIAN_CODE %}
+        <div class="beian">
+            <a href="https://beian.miit.gov.cn/" rel="nofollow" target="_blank">
+                <p>{{ BEIAN_CODE }}</p>
+            </a>
+            {% if BEIAN_CODE_GONGAN and SHOW_GONGAN_CODE %}
+                {{ BEIAN_CODE_GONGAN |safe }}
+            {% endif %}
+        </div>
+    {% endif %}
+    {% if ANALYTICS_CODE %}
+        {{ ANALYTICS_CODE| safe }}
+    {% endif %}
+    {% if GLOBAL_FOOTER %}
+        {{ GLOBAL_FOOTER|safe }}
+    {% endif %}
+    </div>
+</footer><!-- #colophon -->
+
+
