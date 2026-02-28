@@ -10,7 +10,7 @@ class ImageOptimizationPlugin(BasePlugin):
     PLUGIN_NAME = '图片性能优化插件'
     PLUGIN_DESCRIPTION = '自动为文章中的图片添加懒加载、异步解码等性能优化属性，显著提升页面加载速度。'
     PLUGIN_VERSION = '1.0.0'
-    PLUGIN_AUTHOR = 'liangliangyy'
+    PLUGIN_AUTHOR = 'suisui'
 
     def __init__(self):
         # 插件配置

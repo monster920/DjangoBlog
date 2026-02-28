@@ -7,7 +7,7 @@ class ArticleCopyrightPlugin(BasePlugin):
     PLUGIN_NAME = '文章结尾版权声明'
     PLUGIN_DESCRIPTION = '一个在文章正文末尾添加版权声明的插件。'
     PLUGIN_VERSION = '0.2.0'
-    PLUGIN_AUTHOR = 'liangliangyy'
+    PLUGIN_AUTHOR = 'suisui'
 
     # 2. 实现 register_hooks 方法，专门用于注册钩子
     def register_hooks(self):

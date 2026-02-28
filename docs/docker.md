@@ -1,9 +1,5 @@
 # 使用 Docker 部署 DjangoBlog
 
-![Docker Pulls](https://img.shields.io/docker/pulls/liangliangyy/djangoblog)
-![Docker Image Version (latest by date)](https://img.shields.io/docker/v/liangliangyy/djangoblog?sort=date)
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/liangliangyy/djangoblog)
-
 本项目全面支持使用 Docker 进行容器化部署，为您提供了快速、一致且隔离的运行环境。我们推荐使用 `docker-compose` 来一键启动整个博客服务栈。
 
 ## 1. 环境准备

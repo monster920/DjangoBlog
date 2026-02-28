@@ -11,7 +11,7 @@ class ArticleRecommendationPlugin(BasePlugin):
     PLUGIN_NAME = '文章推荐'
     PLUGIN_DESCRIPTION = '智能文章推荐系统，支持多位置展示'
     PLUGIN_VERSION = '1.0.0'
-    PLUGIN_AUTHOR = 'liangliangyy'
+    PLUGIN_AUTHOR = 'suisui'
     
     # 支持的位置
     SUPPORTED_POSITIONS = ['article_bottom']

@@ -1,9 +1,5 @@
 # Deploying DjangoBlog with Docker
 
-![Docker Pulls](https://img.shields.io/docker/pulls/liangliangyy/djangoblog)
-![Docker Image Version (latest by date)](https://img.shields.io/docker/v/liangliangyy/djangoblog?sort=date)
-![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/liangliangyy/djangoblog)
-
 This project fully supports containerized deployment using Docker, providing you with a fast, consistent, and isolated runtime environment. We recommend using `docker-compose` to launch the entire blog service stack with a single command.
 
 ## 1. Prerequisites

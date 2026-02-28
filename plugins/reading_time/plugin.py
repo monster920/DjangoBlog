@@ -9,7 +9,7 @@ class ReadingTimePlugin(BasePlugin):
     PLUGIN_NAME = '阅读时间预测'
     PLUGIN_DESCRIPTION = '估算文章阅读时间并显示在文章开头。'
     PLUGIN_VERSION = '0.1.0'
-    PLUGIN_AUTHOR = 'liangliangyy'
+    PLUGIN_AUTHOR = 'suisui'
 
     def register_hooks(self):
         hooks.register(ARTICLE_CONTENT_HOOK_NAME, self.add_reading_time)

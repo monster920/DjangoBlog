@@ -9,7 +9,7 @@ class ExternalLinksPlugin(BasePlugin):
     PLUGIN_NAME = '外部链接处理器'
     PLUGIN_DESCRIPTION = '自动为文章中的外部链接添加 target="_blank" 和 rel="noopener noreferrer" 属性。'
     PLUGIN_VERSION = '0.1.0'
-    PLUGIN_AUTHOR = 'liangliangyy'
+    PLUGIN_AUTHOR = 'suisui'
 
     def register_hooks(self):
         hooks.register(ARTICLE_CONTENT_HOOK_NAME, self.process_external_links)

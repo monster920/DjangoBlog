@@ -30,7 +30,7 @@ type is in the type field of `oauthmanager`.
 owntracks is a location tracking application. It will send your locaiton to the server by timing.Simple support owntracks features. Just install owntracks app and set api address as `your-domain-name/owntracks/logtracks`. Visit `your-domain-name/owntracks/show_dates` and you will see the date with latitude and langitude, click it and see the motion track. The map is drawn by AMap.
 
 ## Email feature:
-Same as before, Configure your own error msg recvie email information with`ADMINS = [('liangliang', 'liangliangyy@gmail.com')]` in `settings.py`. And modify:
+Same as before, Configure your own error msg recvie email information with`ADMINS = [('admin', 'your@email.com')]` in `settings.py`. And modify:
 ```python
 EMAIL_HOST = 'smtp.zoho.com'
 EMAIL_PORT = 587

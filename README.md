@@ -5,22 +5,20 @@
 </p>
 
 <p align="center">
-  <b>基于 Django 的个人博客系统 - 优化美化版</b>
+  <b>基于 Django 的个人博客系统</b>
 </p>
 
 ---
 
-## 📝 说明
+## ✨ 特性
 
-本项目基于 [liangliangyy/DjangoBlog](https://github.com/liangliangyy/DjangoBlog) 开源项目进行修改优化。
-
-### 主要优化内容
-
-- **界面美化**: 采用现代化暗色主题设计
-- **用户体验**: 优化导航栏、卡片样式、响应式布局
-- **视觉效果**: 添加星空背景、渐变边框、毛玻璃效果
-- **细节打磨**: 优化字体、排版、间距、动画效果
-- **Bug修复**: 修复若干已知问题
+- Markdown 文章编辑与发布
+- 分类、标签管理
+- 评论系统
+- 侧边栏组件
+- 插件系统
+- 暗色主题界面
+- 响应式设计
 
 ---
 
@@ -64,7 +62,7 @@ python manage.py runserver
 
 ---
 
-## 🙏 致谢
+## 作者
 
-- 感谢原项目作者 [liangliangyy](https://github.com/liangliangyy) 的开源贡献
-- 感谢 JetBrains 提供的开发工具支持
+- **suisui** - [monster920](https://github.com/monster920)
+- Email: jh070711@126.com
