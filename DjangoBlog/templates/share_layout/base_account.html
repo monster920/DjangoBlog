@@ -1,0 +1,13 @@
+{% extends 'share_layout/base.html' %}
+{% load static %}
+
+{% block header %}
+    <style>
+        /* 账户页面特定样式 */
+        {% block account_css %}{% endblock %}
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% block account_content %}{% endblock %}
+{% endblock %}

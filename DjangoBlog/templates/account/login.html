@@ -1,0 +1,229 @@
+{% extends 'share_layout/base_account.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+    <div class="account-page">
+        <div class="account-container">
+            <div class="account-header">
+                <h1 class="account-title">欢迎回来</h1>
+                <p class="account-subtitle">登录您的账号</p>
+            </div>
+
+            <div class="card card-signin">
+                <div class="avatar-section">
+                    <img class="img-circle profile-img" src="{% static 'blog/img/avatar.png' %}" alt="头像">
+                </div>
+                
+                <form class="form-signin" action="{% url 'account:login' %}" method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    
+                    {% for field in form %}
+                    <div class="form-group">
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                    {% endfor %}
+
+                    <input type="hidden" name="next" value="{{ redirect_to }}">
+                    
+                    <div class="form-options">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" value="remember-me" name="remember"> 
+                            保持登录
+                        </label>
+                        <a href="{% url 'account:forget_password' %}" class="forgot-link">忘记密码？</a>
+                    </div>
+                    
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">
+                        <i class="fa fa-sign-in"></i> 登录
+                    </button>
+
+                    {% load oauth_tags %}
+                    {% load_oauth_applications request%}
+                </form>
+            </div>
+
+            <div class="account-footer">
+                <p>
+                    还没有账号？ 
+                    <a href="{% url 'account:register' %}">立即注册</a>
+                </p>
+                <p>
+                    <a href="/">← 返回首页</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .account-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+            background: var(--bg-body);
+        }
+        
+        .account-container {
+            width: 100%;
+            max-width: 420px;
+        }
+        
+        .account-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        
+        .account-title {
+            font-size: var(--font-size-3xl);
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .account-subtitle {
+            color: var(--text-muted);
+            font-size: var(--font-size-base);
+        }
+        
+        .card-signin {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: var(--space-2xl);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .avatar-section {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+        
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--border-radius-full);
+            border: 3px solid var(--color-primary);
+            object-fit: cover;
+        }
+        
+        .form-signin {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        
+        .form-signin .form-group input {
+            width: 100%;
+            padding: var(--space-md);
+            font-size: var(--font-size-base);
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            color: var(--text-primary);
+            transition: all var(--transition-fast);
+        }
+        
+        .form-signin .form-group input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-subtle);
+        }
+        
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: var(--font-size-sm);
+        }
+        
+        .checkbox-inline {
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        
+        .checkbox-inline input {
+            margin-right: var(--space-xs);
+        }
+        
+        .forgot-link {
+            color: var(--color-primary);
+            font-size: var(--font-size-sm);
+        }
+        
+        .btn-primary {
+            background: var(--color-primary);
+            border: none;
+            padding: var(--space-md);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
+        }
+        
+        .oauth-section {
+            margin-top: var(--space-xl);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .oauth-title {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-md);
+            position: relative;
+        }
+        
+        .oauth-title::before,
+        .oauth-title::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: var(--border-color);
+        }
+        
+        .oauth-title::before { left: 0; }
+        .oauth-title::after { right: 0; }
+        
+        .account-footer {
+            text-align: center;
+            margin-top: var(--space-xl);
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+        
+        .account-footer a {
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+        
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: var(--color-danger);
+            font-size: var(--font-size-sm);
+        }
+        
+        @media (max-width: 480px) {
+            .account-page {
+                padding: var(--space-md);
+            }
+            
+            .card-signin {
+                padding: var(--space-lg);
+            }
+        }
+    </style>
+{% endblock %}

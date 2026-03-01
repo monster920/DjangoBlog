@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- 网站首页 -->
+    <url>
+        <loc>http://www.suisuiio.top/</loc>
+        <lastmod>2025-11-26</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <!-- 博客文章示例 - 实际使用时会动态生成 -->
+    <url>
+        <loc>http://www.suisuiio.top/blog/1/</loc>
+        <lastmod>2025-11-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- 分类页面示例 -->
+    <url>
+        <loc>http://www.suisuiio.top/category/django/</loc>
+        <lastmod>2025-11-26</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- 标签页面示例 -->
+    <url>
+        <loc>http://www.suisuiio.top/tag/web-development/</loc>
+        <lastmod>2025-11-26</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    
+    <!-- 关于页面 -->
+    <url>
+        <loc>http://www.suisuiio.top/about/</loc>
+        <lastmod>2025-11-26</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <!-- 搜索页面 -->
+    <url>
+        <loc>http://www.suisuiio.top/search/</loc>
+        <lastmod>2025-11-26</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.5</priority>
+    </url>
+</urlset>

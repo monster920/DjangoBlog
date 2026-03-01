@@ -1,0 +1,416 @@
+{% load blog_tags %}
+{% load i18n %}
+<div id="secondary" class="widget-area" role="complementary">
+  <!-- 个人简介区域 -->
+  <aside id="profile-sidebar" class="widget widget_profile">
+    <div class="profile-container">
+      <!-- 头像 -->
+      <div class="avatar-wrapper">
+        <img src="/media/images/suisui.jpg" alt="个人头像" class="avatar-circle">
+      </div>
+
+      <!-- 个人信息 -->
+      <div class="profile-info">
+        <h3 class="profile-name">suisui</h3>
+        <p class="profile-desc">永远都睡不醒</p>
+      </div>
+
+      <!-- 统计数据 -->
+      <div class="profile-stats">
+        <div class="stat-item">
+          <span class="stat-number">{{ recent_articles.count }}</span>
+          <span class="stat-label">文章</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ sidebar_categorys.count }}</span>
+          <span class="stat-label">分类</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ sidebar_tags|length }}</span>
+          <span class="stat-label">标签</span>
+        </div>
+      </div>
+
+      <!-- 社交媒体链接 -->
+      <div class="profile-social">
+        <a href="https://github.com/monster920" class="social-link github" title="GitHub" target="_blank">
+          <i class="fa fa-github"></i>
+          GitHub
+        </a>
+        <a href="/feed" class="social-link rss" title="RSS">
+          <i class="fa fa-rss"></i>
+          RSS
+        </a>
+      </div>
+
+      <!-- 功能入口 -->
+      <div class="profile-functions">
+        <a href="#" class="function-item">
+          <i class="fa fa-link"></i>
+          Links
+        </a>
+        <a href="https://music.163.com" class="function-item" target="_blank">
+          <i class="fa fa-music"></i>
+          Music
+        </a>
+        <a href="https://www.bilibili.com" class="function-item" target="_blank">
+          <i class="fa fa-play-circle"></i>
+          Bilibili
+        </a>
+      </div>
+    </div>
+
+    <!-- 现代化 CSS 样式 -->
+    <style>
+      /* 个人简介样式 - 使用 CSS 变量 */
+      .widget_profile {
+        background: var(--bg-card);
+        border-radius: var(--border-radius-lg);
+        padding: var(--space-lg);
+        margin-bottom: var(--space-lg);
+        backdrop-filter: blur(10px);
+        transition: all var(--transition-base);
+      }
+      
+      .widget_profile:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .profile-container { text-align: center; }
+
+      .avatar-wrapper { margin-bottom: var(--space-md); }
+
+      .avatar-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: var(--border-radius-full);
+        object-fit: cover;
+        border: 3px solid var(--color-primary);
+        transition: transform var(--transition-base);
+      }
+      
+      .avatar-circle:hover {
+        transform: scale(1.05);
+      }
+
+      .profile-info { margin-bottom: var(--space-lg); }
+
+      .profile-name {
+        color: var(--text-light);
+        font-size: var(--font-size-xl);
+        margin: 0 0 var(--space-xs) 0;
+        font-weight: 600;
+      }
+
+      .profile-desc {
+        color: var(--text-muted);
+        font-size: var(--font-size-sm);
+        margin: 0;
+      }
+
+      .profile-stats {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: var(--space-lg);
+        padding: var(--space-md) 0;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .stat-number {
+        color: var(--text-light);
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+      }
+
+      .stat-label {
+        color: var(--text-muted);
+        font-size: var(--font-size-xs);
+      }
+
+      .profile-social {
+        display: flex;
+        justify-content: center;
+        gap: var(--space-sm);
+        margin-bottom: var(--space-lg);
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        gap: var(--space-xs);
+        color: var(--text-light);
+        text-decoration: none;
+        padding: var(--space-sm) var(--space-md);
+        border-radius: var(--border-radius-full);
+        font-size: var(--font-size-sm);
+        transition: all var(--transition-base);
+        background: var(--color-primary-subtle);
+      }
+
+      .social-link:hover {
+        background: var(--color-primary);
+        transform: translateY(-2px);
+      }
+
+      .profile-functions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+      }
+
+      .function-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-sm);
+        color: var(--text-light);
+        text-decoration: none;
+        padding: var(--space-md);
+        border-radius: var(--border-radius-md);
+        background: var(--color-primary-subtle);
+        transition: all var(--transition-base);
+        font-size: var(--font-size-base);
+      }
+
+      .function-item:hover {
+        background: var(--color-primary);
+        transform: translateX(4px);
+      }
+
+      @media (max-width: 768px) {
+        .widget_profile { padding: var(--space-md); }
+        .avatar-circle { width: 80px; height: 80px; }
+        .profile-name { font-size: var(--font-size-lg); }
+        .profile-social { flex-direction: column; }
+        .social-link { justify-content: center; }
+      }
+    </style>
+  </aside>
+  
+  {% if extra_sidebars %}
+  {% for sidebar in extra_sidebars %}
+  <aside class="widget widget_custom_html">
+    <h3 class="widget-title">{{ sidebar.name }}</h3>
+    <div class="widget-content">
+      {{ sidebar.content|sidebar_markdown|safe }}
+    </div>
+  </aside>
+  {% endfor %}
+  {% endif %}
+  
+  {% if most_read_articles %}
+  <aside class="widget widget_views">
+    <h3 class="widget-title"><i class="fa fa-fire"></i> 热门文章</h3>
+    <ul class="widget-list">
+      {% for a in most_read_articles %}
+      <li>
+        <a href="{{ a.get_absolute_url }}" title="{{ a.title }}">{{ a.title }}</a>
+        <span class="view-count"><i class="fa fa-eye"></i> {{ a.views }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+  
+  {% if sidebar_categorys %}
+  <aside class="widget widget_category">
+    <h3 class="widget-title"><i class="fa fa-folder"></i> {% trans 'category' %}</h3>
+    <ul class="widget-list category-list">
+      {% for c in sidebar_categorys %}
+      <li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+  
+  {% if sidebar_comments and open_site_comment %}
+  <aside class="widget widget_recent_comments">
+    <h3 class="widget-title"><i class="fa fa-comments"></i> {% trans 'recent comments' %}</h3>
+    <ul class="widget-list recent-comments">
+      {% for c in sidebar_comments %}
+      <li>
+        <span class="comment-author">{{ c.author.username }}</span>
+        <span class="comment-on">在</span>
+        <a href="{{ c.article.get_absolute_url }}#comment-{{ c.pk }}">{{ c.article.title }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+  
+  {% if recent_articles %}
+  <aside class="widget widget_recent_entries">
+    <h3 class="widget-title"><i class="fa fa-file-text"></i> {% trans 'recent articles' %}</h3>
+    <ul class="widget-list">
+      {% for a in recent_articles %}
+      <li><a href="{{ a.get_absolute_url }}" title="{{ a.title }}">{{ a.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+  
+  {% if sidabar_links %}
+  <aside class="widget widget_links">
+    <h3 class="widget-title"><i class="fa fa-bookmark"></i> {% trans 'bookmark' %}</h3>
+    <ul class="widget-list links-list">
+      {% for l in sidabar_links %}
+      <li><a href="{{ l.link }}" target="_blank" title="{{ l.name }}">{{ l.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+  
+  {% if show_google_adsense %}
+  <aside class="widget widget_adsense">
+    <div class="widget-content">
+      {{ google_adsense_codes|safe }}
+    </div>
+  </aside>
+  {% endif %}
+  
+  {% if sidebar_tags %}
+  <aside class="widget widget_tag_cloud">
+    <h3 class="widget-title"><i class="fa fa-tags"></i> {% trans 'Tag Cloud' %}</h3>
+    <div class="tagcloud">
+      {% for tag,count,size in sidebar_tags %}
+      <a href="{{ tag.get_absolute_url }}" class="tag-cloud-item" style="font-size: {{ size }}pt;" title="{{ count }}篇文章">{{ tag.name }}</a>
+      {% endfor %}
+    </div>
+  </aside>
+  {% endif %}
+
+  <aside class="widget widget_meta">
+    <h3 class="widget-title"><i class="fa fa-cog"></i> {% trans 'Function' %}</h3>
+    <ul class="widget-list meta-list">
+      <li><a href="/admin/" rel="nofollow"><i class="fa fa-dashboard"></i> {% trans 'management site' %}</a></li>
+      {% if user.is_authenticated %}
+      <li><a href="{% url 'account:logout' %}" rel="nofollow"><i class="fa fa-sign-out"></i> {% trans 'logout' %}</a></li>
+      {% else %}
+      <li><a href="{% url 'account:login' %}" rel="nofollow"><i class="fa fa-sign-in"></i> {% trans 'login' %}</a></li>
+      {% endif %}
+      {% if user.is_superuser %}
+      <li><a href="{% url 'owntracks:show_dates' %}" target="_blank"><i class="fa fa-map-marker"></i> {% trans 'Track record' %}</a></li>
+      {% endif %}
+      <li><a href="http://gitbook.lylinux.net" target="_blank" rel="nofollow"><i class="fa fa-book"></i> GitBook</a></li>
+    </ul>
+  </aside>
+
+  <!-- 通用小部件样式 -->
+  <style>
+    .widget {
+      background: var(--bg-card);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      transition: all var(--transition-base);
+    }
+    
+    .widget:hover {
+      background: var(--bg-card-hover);
+    }
+    
+    .widget-title {
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      color: var(--text-light);
+      margin: 0 0 var(--space-md) 0;
+      padding-bottom: var(--space-sm);
+      border-bottom: 2px solid var(--color-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    
+    .widget-title i { color: var(--color-primary); }
+    
+    .widget-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .widget-list li {
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--border-color-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .widget-list li:last-child { border-bottom: none; }
+    
+    .widget-list a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color var(--transition-fast);
+      flex: 1;
+    }
+    
+    .widget-list a:hover { color: var(--color-primary); }
+    
+    .view-count {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+      white-space: nowrap;
+      margin-left: var(--space-sm);
+    }
+    
+    .category-list li { display: block; }
+    .category-list a { display: block; padding: var(--space-xs) 0; }
+    
+    .recent-comments li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-xs);
+    }
+    
+    .comment-author { color: var(--color-primary); font-weight: 500; }
+    .comment-on { color: var(--text-muted); font-size: var(--font-size-xs); }
+    
+    .tagcloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+    
+    .tag-cloud-item {
+      display: inline-block;
+      padding: var(--space-xs) var(--space-sm);
+      background: var(--color-primary-subtle);
+      color: var(--color-primary);
+      border-radius: var(--border-radius-sm);
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+    
+    .tag-cloud-item:hover {
+      background: var(--color-primary);
+      color: var(--text-light);
+    }
+    
+    .meta-list li a {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    
+    .meta-list li a i {
+      width: 20px;
+      color: var(--color-primary);
+    }
+    
+    @media (max-width: 768px) {
+      .widget { padding: var(--space-md); }
+    }
+  </style>
+
+  <div id="rocket" class="show" title="{% trans 'Click me to return to the top' %}"></div>
+</div>

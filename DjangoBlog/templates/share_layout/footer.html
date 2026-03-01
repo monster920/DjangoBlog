@@ -1,0 +1,167 @@
+<!-- 页脚区域 -->
+<footer id="colophon" role="contentinfo">
+    <div class="site-info">
+        <div class="footer-content">
+            <div class="footer-main">
+                <p class="copyright">
+                    <i class="fa fa-copyright"></i> 
+                    Copyright {{ CURRENT_YEAR }} 
+                    <a href="/" target="blank">{{ SITE_NAME }}</a>
+                </p>
+                
+                <div class="footer-links">
+                    <a href="/sitemap.xml" title="SiteMap" target="_blank">
+                        <i class="fa fa-sitemap"></i> SiteMap
+                    </a>
+                    <a href="/feed" title="RSS Feed" target="_blank">
+                        <i class="fa fa-rss"></i> RSS
+                    </a>
+                    <a href="/links.html" title="相关链接" rel="nofollow" target="blank">
+                        <i class="fa fa-link"></i> Links
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="powered-by">
+                    <span>Powered by </span>
+                    <a href="https://www.djangoproject.com/" rel="nofollow" target="blank">Django</a>
+                    <span class="separator">•</span>
+                    <a href="https://github.com/zmrenwu/django-blog-tutorial" rel="nofollow" target="blank">DjangoBlog</a>
+                </div>
+                
+                {% if BEIAN_CODE %}
+                <div class="beian">
+                    <a href="https://beian.miit.gov.cn/" rel="nofollow" target="_blank">
+                        <i class="fa fa-shield"></i> {{ BEIAN_CODE }}
+                    </a>
+                    {% if BEIAN_CODE_GONGAN and SHOW_GONGAN_CODE %}
+                    <span class="separator">•</span>
+                    {{ BEIAN_CODE_GONGAN|safe }}
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    {% if ANALYTICS_CODE %}
+        {{ ANALYTICS_CODE|safe }}
+    {% endif %}
+    {% if GLOBAL_FOOTER %}
+        {{ GLOBAL_FOOTER|safe }}
+    {% endif %}
+    
+    <style>
+        #colophon {
+            background-color: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: var(--space-xl) 0;
+            margin-top: var(--space-2xl);
+        }
+        
+        .site-info {
+            max-width: var(--container-max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+        
+        .footer-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-md);
+            text-align: center;
+        }
+        
+        .copyright {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+            margin: 0;
+        }
+        
+        .copyright a {
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+        
+        .copyright i {
+            margin-right: var(--space-xs);
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--space-md);
+        }
+        
+        .footer-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+            transition: color var(--transition-fast);
+        }
+        
+        .footer-links a:hover {
+            color: var(--color-primary);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--border-color-light);
+        }
+        
+        .powered-by {
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+        }
+        
+        .powered-by a {
+            color: var(--text-secondary);
+        }
+        
+        .powered-by a:hover {
+            color: var(--color-primary);
+        }
+        
+        .separator {
+            margin: 0 var(--space-xs);
+            color: var(--text-muted);
+        }
+        
+        .beian {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: var(--font-size-sm);
+        }
+        
+        .beian a {
+            color: var(--text-muted);
+        }
+        
+        .beian a:hover {
+            color: var(--color-primary);
+        }
+        
+        @media (max-width: 768px) {
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</footer><!-- #colophon -->

@@ -1,0 +1,176 @@
+{% extends 'share_layout/base.html' %}
+{% load blog_tags %}
+{% load i18n %}
+
+{% block header %}
+    <title>{{ SITE_NAME }} | {{ SITE_DESCRIPTION }}</title>
+    <meta name="description" content="{{ SITE_SEO_DESCRIPTION }}"/>
+    <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>
+    <style>
+        .search-page { padding: var(--space-xl) 0; }
+        
+        .search-header {
+            margin-bottom: var(--space-2xl);
+            text-align: center;
+        }
+        
+        .search-title {
+            font-size: var(--font-size-3xl);
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .search-query {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+        
+        .search-suggestion {
+            margin-top: var(--space-md);
+            padding: var(--space-md);
+            background: var(--color-primary-subtle);
+            border-radius: var(--border-radius-sm);
+            display: inline-block;
+        }
+        
+        .search-suggestion a {
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+        
+        .search-results-count {
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: var(--space-3xl);
+        }
+        
+        .no-results-icon {
+            font-size: 4rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .no-results-title {
+            font-size: var(--font-size-xl);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .no-results-title span {
+            color: var(--color-primary);
+        }
+        
+        .no-results-tips {
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+        }
+        
+        .search-pagination {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            margin-top: var(--space-2xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .search-pagination a {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border-radius: var(--border-radius-sm);
+            transition: all var(--transition-fast);
+        }
+        
+        .search-pagination a:hover {
+            background: var(--color-primary);
+            color: var(--text-light);
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="primary" class="site-content search-page">
+        <div id="content" role="main">
+            {% if query %}
+                <header class="search-header">
+                    {% if suggestion %}
+                        <h1 class="search-title">
+                            搜索结果: <span class="search-query">"{{ suggestion }}"</span>
+                        </h1>
+                        <div class="search-suggestion">
+                            您要找的是不是: 
+                            <a href="/search/?q={{ query }}&is_suggest=no">"{{ query }}"</a>
+                        </div>
+                    {% else %}
+                        <h1 class="search-title">
+                            搜索: <span class="search-query">"{{ query }}"</span>
+                        </h1>
+                    {% endif %}
+                </header>
+                
+                {% if page.object_list %}
+                    <div class="search-results-count">
+                        找到 {{ paginator.count }} 个结果
+                    </div>
+                    
+                    {% for article in page.object_list %}
+                        {% load_article_detail article.object True user %}
+                    {% endfor %}
+                    
+                    {% if page.has_previous or page.has_next %}
+                        <nav class="search-pagination">
+                            {% if page.has_previous %}
+                                <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">
+                                    <i class="fa fa-arrow-left"></i> 上一页
+                                </a>
+                            {% endif %}
+                            {% if page.has_next %}
+                                <a href="?q={{ query }}&amp;page={{ page.next_page_number }}">
+                                    下一页 <i class="fa fa-arrow-right"></i>
+                                </a>
+                            {% endif %}
+                        </nav>
+                    {% endif %}
+                {% else %}
+                    <div class="no-results">
+                        <div class="no-results-icon">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <h2 class="no-results-title">
+                            没有找到关于 <span>"{{ query }}"</span> 的结果
+                        </h2>
+                        <p class="no-results-tips">
+                            试试其他关键词，或返回 <a href="/">首页</a>
+                        </p>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="no-results">
+                    <div class="no-results-icon">
+                        <i class="fa fa-search"></i>
+                    </div>
+                    <h2 class="no-results-title">
+                        请输入搜索关键词
+                    </h2>
+                    <p class="no-results-tips">
+                        返回 <a href="/">首页</a>
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    {% load_sidebar request.user 'i' %}
+{% endblock %}

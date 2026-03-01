@@ -1,0 +1,389 @@
+{% load static %}
+{% load cache %}
+{% load i18n %}
+{% load compress %}
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="zh-CN"
+      prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="zh-CN"
+      prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+<![endif]-->
+<!--[if !(IE 7) & !(IE 8)]><!-->
+<html lang="zh-CN" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+<!--<![endif]-->
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="theme-color" content="#21759b"/>
+    
+    <!-- FOUC 防护 - 在所有样式加载前设置主题 -->
+    <script>
+        (function() {
+            var theme = localStorage.getItem('theme') || 
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    {% load blog_tags %}
+    {% head_meta %}
+    {% block header %}
+        <!-- SEO插件会自动生成title、description、keywords等标签 -->
+    {% endblock %}
+    <link rel="profile" href="http://gmpg.org/xfn/11"/>
+
+    <!-- 资源提示和预加载优化 -->
+    <link rel="dns-prefetch" href="//cdn.mathjax.org"/>
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net"/>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>
+    
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+    <!--[if lt IE 9]>
+    <script src="{% static 'blog/js/html5.js' %}" type="text/javascript"></script>
+    <![endif]-->
+
+    <!-- RSS和图标 -->
+    <link rel="alternate" type="application/rss+xml" title="{{ SITE_NAME }} &raquo; Feed" href="/feed"/>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="apple-touch-icon" href="/favicon.ico"/>
+
+    <!-- 字体优化 - 使用 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {% compress css %}
+        <link rel='stylesheet' id='twentytwelve-style-css' href='{% static 'blog/css/style.css' %}' type='text/css'
+              media='all'/>
+        <link rel='stylesheet' id='dark-theme-css' href='{% static 'blog/css/dark_theme.css' %}' type='text/css'
+              media='all'/>
+        <link rel='stylesheet' id='theme-css' href='{% static 'blog/css/theme.css' %}' type='text/css'
+              media='all'/>
+        <link href="{% static 'blog/css/oauth_style.css' %}" rel="stylesheet">
+        {% comment %}<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>{% endcomment %}
+        <!--[if lt IE 9]>
+        <link rel='stylesheet' id='twentytwelve-ie-css'  href='{% static 'blog/css/ie.css' %}' type='text/css' media='all' />
+        <![endif]-->
+        <link rel="stylesheet" href="{% static 'pygments/default.css' %}"/>
+        <link rel="stylesheet" href="{% static 'blog/css/nprogress.css' %}">
+        {% block compress_css %}
+        {% endblock %}
+        <!-- 插件CSS文件 - 集成到压缩系统 -->
+        {% plugin_compressed_css %}
+    {% endcompress %}
+
+    {% if GLOBAL_HEADER %}
+        <div class="global-header-content">
+            {{ GLOBAL_HEADER|safe }}
+        </div>
+    {% endif %}
+
+    <!-- 插件head资源 -->
+    {% plugin_head_resources %}
+</head>
+
+<body class="home blog custom-font-enabled">
+    <!-- 背景层 -->
+    <div class="star-field"></div>
+    
+    <!-- 页面加载遮罩 -->
+    <div id="page-loader" class="page-loader">
+        <div class="loader-spinner">
+            <div class="spinner"></div>
+        </div>
+    </div>
+    
+<div id="page" class="hfeed site">
+    <header id="masthead" class="site-header" role="banner">
+        <div class="header-content">
+            <hgroup class="site-branding">
+                <h1 class="site-title"><a href="/" title="{{ SITE_NAME }}" rel="home">{{ SITE_NAME }}</a>
+                </h1>
+                <h2 class="site-description">{{ SITE_DESCRIPTION }}</h2>
+            </hgroup>
+            <div class="header-search">
+                <form role="search" method="get" id="searchform" class="searchform" action="/search">
+                    <div class="search-input-wrapper">
+                        <input type="text" value="" name="q" id="q" placeholder="搜索">
+                        <input type="submit" id="searchsubmit" value="搜索">
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% load i18n %}
+        {% include 'share_layout/nav.html' %}
+
+
+    </header><!-- #masthead -->
+    <div id="main" class="wrapper">
+
+        {% block content %}
+        {% endblock %}
+
+
+        {% block sidebar %}
+        {% endblock %}
+
+
+    </div><!-- #main .wrapper -->
+    {% include 'share_layout/footer.html' %}
+</div><!-- #page -->
+
+<!-- JavaScript资源 -->
+{% compress js %}
+    <script src="{% static 'blog/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'blog/js/nprogress.js' %}"></script>
+    <script src="{% static 'blog/js/blog.js' %}"></script>
+    <script src="{% static 'blog/js/navigation.js' %}"></script>
+    {% block compress_js %}
+    {% endblock %}
+    <!-- 插件JS文件 - 集成到压缩系统 -->
+    {% plugin_compressed_js %}
+{% endcompress %}
+
+<!-- MathJax智能加载器 -->
+    <script src="{% static 'blog/js/mathjax-loader.js' %}" async defer></script>
+    
+    <!-- 隐藏顶部版本信息的CSS -->
+    <!-- <style>
+        /* 隐藏顶部的版本信息条 */
+        body > :first-child:not(.star-field):not(#page) {
+            display: none !important;
+        }
+        
+        /* 确保页面内容正确显示 */
+        .star-field {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style> -->
+
+    <!-- 页面加载动画样式 -->
+    <style>
+        /* 页面加载遮罩 */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-site);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .page-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 页面内容淡入 */
+        #page {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        #page.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 链接悬停效果 */
+        a {
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        
+        /* 卡片悬停效果 */
+        .card, .article-card, .widget, .comment {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+        
+        /* 按钮悬停效果 */
+        .btn, button, input[type="submit"] {
+            transition: all 0.2s ease;
+        }
+        
+        /* 图片加载动画 */
+        img {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        img.loaded {
+            opacity: 1;
+        }
+        
+        /* 返回顶部按钮 */
+        #rocket {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
+        }
+        
+        #rocket.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        #rocket:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 191, 255, 0.4);
+        }
+        
+        #rocket::before {
+            content: '\f077';
+            font-family: 'FontAwesome';
+            color: white;
+            font-size: 20px;
+        }
+    </style>
+
+{% block footer %}
+{% endblock %}
+
+<!-- 导航栏滚动效果 + 页面加载动画 -->
+<script>
+// 页面加载完成后隐藏遮罩
+window.addEventListener('load', function() {
+    var loader = document.getElementById('page-loader');
+    var page = document.getElementById('page');
+    
+    if (loader) {
+        loader.classList.add('hidden');
+        setTimeout(function() {
+            loader.style.display = 'none';
+        }, 500);
+    }
+    
+    if (page) {
+        page.classList.add('loaded');
+    }
+    
+    // 图片加载完成动画
+    var images = document.querySelectorAll('img');
+    images.forEach(function(img) {
+        if (img.complete) {
+            img.classList.add('loaded');
+        } else {
+            img.addEventListener('load', function() {
+                img.classList.add('loaded');
+            });
+        }
+    });
+});
+
+// 初始化主题 - 立即执行
+(function() {
+    var savedTheme = localStorage.getItem('theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var icon = document.getElementById('theme-icon');
+    var theme = savedTheme || (prefersDark ? 'dark' : 'light');
+    
+    document.documentElement.setAttribute('data-theme', theme);
+    
+    if (icon) {
+        icon.className = theme === 'dark' ? 'fa fa-sun-o' : 'fa fa-moon-o';
+    }
+})();
+
+document.addEventListener('DOMContentLoaded', function() {
+    var header = document.querySelector('.site-header');
+    var nav = document.querySelector('.main-navigation');
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            header && header.classList.add('scrolled');
+            nav && nav.classList.add('scrolled');
+        } else {
+            header && header.classList.remove('scrolled');
+            nav && nav.classList.remove('scrolled');
+        }
+    });
+    
+    // 返回顶部按钮
+    var rocket = document.getElementById('rocket');
+    if (rocket) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                rocket.classList.add('visible');
+            } else {
+                rocket.classList.remove('visible');
+            }
+        });
+        
+        rocket.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+    
+    // 当前页面高亮
+    var currentPath = window.location.pathname;
+    var navLinks = document.querySelectorAll('.nav-menu a');
+    navLinks.forEach(function(link) {
+        if (link.getAttribute('href') === currentPath || 
+            (currentPath === '/' && link.getAttribute('href') === '/')) {
+            link.classList.add('current-menu-item');
+        }
+    });
+});
+</script>
+
+<!-- 插件body资源 -->
+{% plugin_body_resources %}
+</body>
+</html>

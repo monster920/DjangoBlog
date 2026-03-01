@@ -1,0 +1,92 @@
+{% extends 'share_layout/base.html' %}
+{% load blog_tags %}
+{% load cache %}
+{% load i18n %}
+
+{% block header %}
+    <title>{% trans 'article archive' %} | {{ SITE_DESCRIPTION }}</title>
+    <meta name="description" content="{{ SITE_SEO_DESCRIPTION }}"/>
+    <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>
+    <style>
+        .archive-page { padding: var(--space-xl) 0; }
+        .archive-header { margin-bottom: var(--space-2xl); }
+        .archive-title { font-size: var(--font-size-3xl); color: var(--text-primary); text-align: center; padding-bottom: var(--space-lg); border-bottom: 2px solid var(--color-primary); }
+        
+        .archive-timeline { position: relative; padding-left: var(--space-xl); }
+        .archive-timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--color-primary), var(--color-primary-hover)); border-radius: 3px; }
+        
+        .archive-year { position: relative; margin-bottom: var(--space-2xl); }
+        .archive-year::before { content: ''; position: absolute; left: calc(-1 * var(--space-xl) - 7px); top: 5px; width: 14px; height: 14px; background: var(--color-primary); border-radius: 50%; border: 3px solid var(--bg-site); }
+        
+        .year-label { font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-primary); margin-bottom: var(--space-lg); padding: var(--space-sm) var(--space-md); background: var(--color-primary-subtle); border-radius: var(--border-radius-sm); display: inline-block; }
+        
+        .archive-month { margin-bottom: var(--space-lg); margin-left: var(--space-lg); }
+        .month-label { font-size: var(--font-size-lg); font-weight: 600; color: var(--text-secondary); margin-bottom: var(--space-md); display: flex; align-items: center; gap: var(--space-sm); }
+        .month-label::before { content: ''; width: 8px; height: 8px; background: var(--text-muted); border-radius: 50%; }
+        
+        .archive-articles { list-style: none; padding: 0; margin: 0; }
+        .archive-article-item { padding: var(--space-sm) 0; border-bottom: 1px solid var(--border-color-light); transition: all var(--transition-fast); }
+        .archive-article-item:last-child { border-bottom: none; }
+        .archive-article-item:hover { padding-left: var(--space-sm); }
+        .archive-article-item a { color: var(--text-secondary); text-decoration: none; display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); }
+        .archive-article-item a:hover { color: var(--color-primary); }
+        .article-date { font-size: var(--font-size-sm); color: var(--text-muted); white-space: nowrap; }
+        
+        .no-archives { text-align: center; padding: var(--space-3xl); color: var(--text-muted); }
+        .no-archives i { font-size: 3rem; margin-bottom: var(--space-md); opacity: 0.5; }
+        
+        @media (max-width: 768px) {
+            .archive-timeline { padding-left: var(--space-md); }
+            .archive-year::before { left: calc(-1 * var(--space-md) - 6px); }
+            .archive-month { margin-left: var(--space-md); }
+            .archive-article-item a { flex-direction: column; align-items: flex-start; gap: var(--space-xs); }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="primary" class="site-content archive-page">
+        <div id="content" role="main">
+            <header class="archive-header">
+                <h1 class="archive-title">{% trans 'article archive' %}</h1>
+            </header>
+            <div class="archive-content">
+                {% if article_list %}
+                    {% regroup article_list by pub_time.year as year_post_group %}
+                    <div class="archive-timeline">
+                        {% for year in year_post_group %}
+                            <div class="archive-year">
+                                <span class="year-label">{{ year.grouper }} {% trans 'year' %}</span>
+                                {% regroup year.list by pub_time.month as month_post_group %}
+                                {% for month in month_post_group %}
+                                    <div class="archive-month">
+                                        <div class="month-label">{{ month.grouper }} {% trans 'month' %}</div>
+                                        <ul class="archive-articles">
+                                            {% for article in month.list %}
+                                                <li class="archive-article-item">
+                                                    <a href="{{ article.get_absolute_url }}">
+                                                        <span class="article-title">{{ article.title }}</span>
+                                                        <span class="article-date">{{ article.pub_time|date:"Y-m-d" }}</span>
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="no-archives">
+                        <i class="fa fa-archive"></i>
+                        <p>暂无归档内容</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    {% load_sidebar user 'i' %}
+{% endblock %}

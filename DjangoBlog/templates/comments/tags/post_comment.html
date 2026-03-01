@@ -1,0 +1,259 @@
+{% load i18n %}
+{% load blog_tags %}
+
+<div id="comments" class="comments-area comment-form-wrapper">
+
+    <div id="respond" class="comment-respond">
+        <h3 id="reply-title" class="comment-reply-title">
+            发表评论
+            <small>
+                <a rel="nofollow" id="cancel-comment-reply-link" href="javascript:void(0)" 
+                   onclick="cancel_reply()" style="display: none;">取消回复</a>
+            </small>
+        </h3>
+        
+        <!-- 审核状态提示 -->
+        {% if COMMENT_NEED_REVIEW %}
+        <div class="comment-notice comment-notice-warning">
+            <i class="fa fa-info-circle"></i>
+            <span>您的评论需要经过审核后才会显示，感谢您的耐心。</span>
+        </div>
+        {% endif %}
+        
+        <!-- Markdown 支持提示 -->
+        <div class="comment-notice comment-notice-info">
+            <i class="fa fa-markdown"></i>
+            <span>支持 Markdown 语法，评论经审核后才会显示。</span>
+        </div>
+        
+        <form action="{% url 'comments:postcomment' article.pk %}" method="post" 
+              id="commentform" class="comment-form" novalidate>
+            {% csrf_token %}
+            
+            <p class="comment-form-comment">
+                <label for="id_body" class="form-label">评论内容 <span class="required">*</span></label>
+                {{ form.body }}
+                <span class="form-hint">
+                    <span id="char-count">0</span> / 2000 字符
+                </span>
+                {{ form.body.errors }}
+            </p>
+            
+            {{ form.parent_comment_id }}
+            
+            <div class="form-submit">
+                <button type="submit" name="submit" id="submit" class="submit btn btn-primary">
+                    <i class="fa fa-paper-plane"></i> 发表评论
+                </button>
+                <small class="cancel-comment" id="cancel_comment" style="display: none">
+                    <a href="javascript:void(0)" id="cancel-comment-reply-link" onclick="cancel_reply()">
+                        <i class="fa fa-times"></i> 取消回复
+                    </a>
+                </small>
+            </div>
+        </form>
+    </div><!-- #respond -->
+
+</div><!-- #comments .comments-area -->
+
+<style>
+    /* 评论表单样式 */
+    .comment-form-wrapper {
+        background-color: var(--bg-card);
+        border-radius: var(--border-radius-md);
+        padding: var(--space-xl);
+    }
+    
+    .comment-reply-title {
+        font-size: var(--font-size-xl);
+        color: var(--text-light);
+        margin-bottom: var(--space-lg);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .comment-notice {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        padding: var(--space-sm) var(--space-md);
+        border-radius: var(--border-radius-sm);
+        margin-bottom: var(--space-md);
+        font-size: var(--font-size-sm);
+    }
+    
+    .comment-notice-warning {
+        background-color: rgba(255, 193, 7, 0.15);
+        color: #ffc107;
+        border-left: 3px solid #ffc107;
+    }
+    
+    .comment-notice-info {
+        background-color: var(--color-primary-subtle);
+        color: var(--color-primary);
+        border-left: 3px solid var(--color-primary);
+    }
+    
+    .comment-form .form-label {
+        display: block;
+        margin-bottom: var(--space-sm);
+        font-weight: 500;
+        color: var(--text-secondary);
+    }
+    
+    .comment-form .required {
+        color: var(--color-danger);
+    }
+    
+    .comment-form textarea#id_body {
+        width: 100%;
+        min-height: 150px;
+        padding: var(--space-md);
+        font-size: var(--font-size-base);
+        font-family: inherit;
+        color: var(--text-primary);
+        background-color: var(--bg-input);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-sm);
+        resize: vertical;
+        transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    
+    .comment-form textarea#id_body:focus {
+        outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px var(--color-primary-subtle);
+    }
+    
+    .comment-form textarea#id_body::placeholder {
+        color: var(--text-muted);
+    }
+    
+    .form-submit {
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        margin-top: var(--space-md);
+    }
+    
+    .form-submit .submit {
+        padding: var(--space-sm) var(--space-xl);
+        font-size: var(--font-size-base);
+        font-weight: 500;
+        border-radius: var(--border-radius-sm);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+    }
+    
+    .form-submit .submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
+    }
+    
+    .cancel-comment a {
+        color: var(--text-muted);
+        font-size: var(--font-size-sm);
+        transition: color var(--transition-fast);
+    }
+    
+    .cancel-comment a:hover {
+        color: var(--color-danger);
+    }
+    
+    /* 字符计数样式 */
+    .char-count-warning {
+        color: var(--color-warning) !important;
+    }
+    
+    .char-count-error {
+        color: var(--color-danger) !important;
+    }
+    
+    /* 表单验证样式 */
+    .comment-form .errorlist {
+        list-style: none;
+        padding: 0;
+        margin: var(--space-xs) 0;
+    }
+    
+    .comment-form .errorlist li {
+        color: var(--color-danger);
+        font-size: var(--font-size-sm);
+    }
+    
+    /* 响应式 */
+    @media (max-width: 768px) {
+        .comment-form-wrapper {
+            padding: var(--space-md);
+        }
+        
+        .form-submit {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .form-submit .submit {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('id_body');
+    const charCount = document.getElementById('char-count');
+    const maxChars = 2000;
+    
+    if (textarea && charCount) {
+        // 初始化字符计数
+        updateCharCount();
+        
+        // 监听输入事件
+        textarea.addEventListener('input', updateCharCount);
+        
+        function updateCharCount() {
+            const currentLength = textarea.value.length;
+            charCount.textContent = currentLength;
+            
+            // 更新样式
+            charCount.parentElement.classList.remove('char-count-warning', 'char-count-error');
+            
+            if (currentLength > maxChars) {
+                charCount.parentElement.classList.add('char-count-error');
+            } else if (currentLength > maxChars * 0.8) {
+                charCount.parentElement.classList.add('char-count-warning');
+            }
+        }
+    }
+    
+    // 表单验证
+    const commentForm = document.getElementById('commentform');
+    if (commentForm) {
+        commentForm.addEventListener('submit', function(e) {
+            const body = document.getElementById('id_body');
+            
+            if (!body || body.value.trim().length === 0) {
+                e.preventDefault();
+                alert('请输入评论内容');
+                body.focus();
+                return false;
+            }
+            
+            if (body.value.length > maxChars) {
+                e.preventDefault();
+                alert('评论内容不能超过 ' + maxChars + ' 字符');
+                body.focus();
+                return false;
+            }
+            
+            // 禁用提交按钮防止重复提交
+            const submitBtn = document.getElementById('submit');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 提交中...';
+            }
+        });
+    }
+});
+</script>

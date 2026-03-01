@@ -1,0 +1,189 @@
+{% load blog_tags %}
+<li class="comment depth-{{ depth }}" id="comment-{{ comment_item.pk }}"
+    style="margin-left: {% widthratio depth 1 3 %}rem">
+    <div id="div-comment-{{ comment_item.pk }}" class="comment-body">
+        <div class="comment-header">
+            <div class="comment-author vcard">
+                <!-- 优化头像加载：移除重复的 srcset，添加固定尺寸 -->
+                <img alt="{{ comment_item.author.username }}的头像"
+                     src="{{ comment_item.author.email|gravatar_url:96 }}"
+                     class="avatar avatar-48 photo"
+                     loading="lazy"
+                     decoding="async"
+                     width="48"
+                     height="48">
+                <cite class="fn">
+                    {% if comment_item.author.is_superuser %}
+                    <a href="{{ comment_item.author.get_absolute_url }}"
+                       rel="nofollow" class="url author-link">
+                        {{ comment_item.author.username }}
+                        <span class="author-badge">博主</span>
+                    </a>
+                    {% else %}
+                    <span class="url">{{ comment_item.author.username }}</span>
+                    {% endif %}
+                </cite>
+            </div>
+
+            <div class="comment-meta commentmetadata">
+                <time datetime="{{ comment_item.creation_time|date:'c' }}">
+                    {{ comment_item.creation_time }}
+                </time>
+            </div>
+        </div>
+
+        <div class="comment-content-wrapper">
+            {% if comment_item.parent_comment %}
+                <div class="comment-reply-to">
+                    <i class="fa fa-reply"></i> 回复 
+                    <a href="#comment-{{ comment_item.parent_comment.pk }}">
+                        @{{ comment_item.parent_comment.author.username }}
+                    </a>
+                </div>
+            {% endif %}
+
+            <div class="comment-content">
+                {{ comment_item.body|escape|comment_markdown }}
+            </div>
+        </div>
+
+        <div class="comment-actions">
+            <a rel="nofollow" class="comment-reply-link"
+              href="javascript:void(0)" 
+              data-pk="{{ comment_item.pk }}"
+              aria-label="回复给{{ comment_item.author.username }}">
+                <i class="fa fa-reply"></i> 回复
+            </a>
+        </div>
+    </div>
+
+</li><!-- #comment-## -->
+
+{% query article_comments parent_comment=comment_item as cc_comments %}
+{% for cc in cc_comments %}
+    {% with comment_item=cc template_name="comments/tags/comment_item_tree.html" %}
+        {% if depth >= 1 %}
+            {% include template_name %}
+        {% else %}
+            {% with depth=depth|add:1 %}
+                {% include template_name %}
+            {% endwith %}
+        {% endif %}
+    {% endwith %}
+{% endfor %}
+
+<style>
+    /* 评论项样式 */
+    .comment {
+        background-color: var(--bg-card);
+        border-radius: var(--border-radius-md);
+        padding: var(--space-lg);
+        margin-bottom: var(--space-md);
+        transition: background-color var(--transition-base);
+    }
+    
+    .comment:hover {
+        background-color: var(--bg-card-hover);
+    }
+    
+    .comment-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--space-sm);
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+    }
+    
+    .comment-author {
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+    }
+    
+    .comment-author .avatar {
+        border-radius: var(--border-radius-full);
+        object-fit: cover;
+        background-color: var(--bg-code);
+    }
+    
+    .comment-author .fn {
+        font-style: normal;
+        font-weight: 500;
+        color: var(--text-light);
+    }
+    
+    .author-badge {
+        display: inline-block;
+        background-color: var(--color-primary);
+        color: var(--text-light);
+        font-size: var(--font-size-xs);
+        padding: 2px 6px;
+        border-radius: var(--border-radius-sm);
+        margin-left: var(--space-xs);
+    }
+    
+    .comment-meta {
+        font-size: var(--font-size-xs);
+        color: var(--text-muted);
+    }
+    
+    .comment-content-wrapper {
+        margin-bottom: var(--space-md);
+    }
+    
+    .comment-reply-to {
+        font-size: var(--font-size-sm);
+        color: var(--text-muted);
+        margin-bottom: var(--space-sm);
+    }
+    
+    .comment-reply-to a {
+        color: var(--color-primary);
+    }
+    
+    .comment-content {
+        line-height: var(--line-height-relaxed);
+        color: var(--text-light);
+        word-wrap: break-word;
+    }
+    
+    .comment-actions {
+        display: flex;
+        gap: var(--space-md);
+    }
+    
+    .comment-reply-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-xs);
+        font-size: var(--font-size-sm);
+        color: var(--text-muted);
+        transition: color var(--transition-fast);
+    }
+    
+    .comment-reply-link:hover {
+        color: var(--color-primary);
+    }
+    
+    /* 嵌套评论样式 */
+    .comment .comment {
+        margin-left: var(--space-lg);
+        background-color: var(--bg-card-hover);
+    }
+    
+    @media (max-width: 768px) {
+        .comment {
+            padding: var(--space-md);
+        }
+        
+        .comment-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .comment .comment {
+            margin-left: var(--space-md);
+        }
+    }
+</style>

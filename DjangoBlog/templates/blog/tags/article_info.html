@@ -1,0 +1,233 @@
+{% load blog_tags %}
+{% load cache %}
+{% load i18n %}
+
+<article id="post-{{ article.pk }}" class="post-{{ article.pk }} post type-post status-publish format-standard hentry article-card">
+    <header class="entry-header">
+
+        <h1 class="entry-title">
+            {% if  isindex %}
+                {% if article.article_order > 0 %}
+                    <a href="{{ article.get_absolute_url }}" rel="bookmark" class="article-title-link pinned">
+                        <span class="pin-badge">置顶</span>{{ article.title }}
+                    </a>
+                {% else %}
+                    <a href="{{ article.get_absolute_url }}" rel="bookmark" class="article-title-link">
+                        {{ article.title }}
+                    </a>
+                {% endif %}
+
+            {% else %}
+                {{ article.title }}
+            {% endif %}
+        </h1>
+        
+        <!-- 简洁的元信息 -->
+        <div class="article-meta-bar">
+            <span class="meta-item">
+                <i class="fa fa-calendar"></i> {{ article.pub_time|date:"Y-m-d" }}
+            </span>
+            <span class="meta-item">
+                <i class="fa fa-eye"></i> {{ article.views }}
+            </span>
+            {% if article.comment_status == "o" and open_site_comment %}
+            <span class="meta-item">
+                <i class="fa fa-comments"></i>
+                {% if article.comment_set and article.comment_set.count %}
+                    {{ article.comment_set.count }}
+                {% else %}
+                    0
+                {% endif %}
+            </span>
+            {% endif %}
+        </div>
+        
+    </header><!-- .entry-header -->
+
+    <div class="entry-content" itemprop="articleBody">
+        {% if  isindex %}
+            {% render_article_content article True %}
+            <p class='read-more'>
+                <a href='{{ article.get_absolute_url }}'>阅读全文 <i class="fa fa-arrow-right"></i></a>
+            </p>
+        {% else %}
+
+            {% if article.show_toc %}
+                {% get_markdown_toc article.body as toc %}
+                <div class="article-toc">
+                    <h3>目录</h3>
+                    {{ toc|safe }}
+                </div>
+                <hr class="break_line"/>
+            {% endif %}
+            <div class="article">
+                {% render_article_content article False %}
+            </div>
+        {% endif %}
+
+    </div><!-- .entry-content -->
+
+    {% load_article_metas article user %}
+
+</article><!-- #post -->
+
+<style>
+    /* 文章卡片样式 */
+    .article-card {
+        background-color: var(--bg-card);
+        border-radius: var(--border-radius-md);
+        padding: var(--space-xl);
+        margin-bottom: var(--space-xl);
+        transition: all var(--transition-base);
+    }
+    
+    .article-card:hover {
+        background-color: var(--bg-card-hover);
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .article-card .entry-header {
+        margin-bottom: var(--space-md);
+    }
+    
+    .article-card .entry-title {
+        margin-bottom: var(--space-sm);
+    }
+    
+    .article-title-link {
+        color: var(--text-primary);
+        font-size: var(--font-size-xl);
+        font-weight: 600;
+        text-decoration: none;
+        transition: color var(--transition-fast);
+        display: block;
+    }
+    
+    .article-title-link:hover {
+        color: var(--color-primary);
+    }
+    
+    .article-title-link.pinned {
+        position: relative;
+    }
+    
+    .pin-badge {
+        display: inline-block;
+        background-color: var(--color-danger);
+        color: #fff;
+        font-size: var(--font-size-xs);
+        padding: 2px 8px;
+        border-radius: var(--border-radius-sm);
+        margin-right: var(--space-sm);
+        vertical-align: middle;
+    }
+    
+    /* 元信息栏 */
+    .article-meta-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-md);
+        font-size: var(--font-size-sm);
+        color: var(--text-muted);
+        padding-bottom: var(--space-md);
+        border-bottom: 1px solid var(--border-color-light);
+    }
+    
+    .meta-item {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-xs);
+    }
+    
+    .meta-item i {
+        color: var(--color-primary);
+    }
+    
+    /* 文章内容 */
+    .article-card .entry-content {
+        color: var(--text-secondary);
+        line-height: var(--line-height-relaxed);
+    }
+    
+    .article-card .entry-content p {
+        margin-bottom: var(--space-md);
+    }
+    
+    /* 阅读更多按钮 */
+    .article-card .read-more {
+        margin-top: var(--space-lg);
+    }
+    
+    .article-card .read-more a {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-xs);
+        color: var(--color-primary);
+        font-weight: 500;
+        transition: all var(--transition-fast);
+    }
+    
+    .article-card .read-more a:hover {
+        gap: var(--space-sm);
+    }
+    
+    /* 底部元信息 */
+    .article-card .entry-meta {
+        margin-top: var(--space-lg);
+        padding-top: var(--space-md);
+        border-top: 1px solid var(--border-color-light);
+        font-size: var(--font-size-sm);
+    }
+    
+    /* 目录样式 */
+    .article-toc {
+        background-color: var(--color-primary-subtle);
+        padding: var(--space-md);
+        border-radius: var(--border-radius-sm);
+        margin-bottom: var(--space-lg);
+    }
+    
+    .article-toc h3 {
+        font-size: var(--font-size-base);
+        margin-bottom: var(--space-sm);
+        color: var(--color-primary);
+    }
+    
+    .article-toc ul {
+        margin: 0;
+        padding-left: var(--space-md);
+    }
+    
+    .article-toc li {
+        margin-bottom: var(--space-xs);
+    }
+    
+    .article-toc a {
+        color: var(--text-secondary);
+    }
+    
+    .article-toc a:hover {
+        color: var(--color-primary);
+    }
+    
+    /* 响应式 */
+    @media (max-width: 768px) {
+        .article-card {
+            padding: var(--space-md);
+        }
+        
+        .article-meta-bar {
+            gap: var(--space-sm);
+        }
+        
+        .article-title-link {
+            font-size: var(--font-size-lg);
+        }
+    }
+</style>
+
+<!-- 文章底部插件 -->
+{% if not isindex %}
+    {% render_plugin_widgets 'article_bottom' article=article %}
+{% endif %}

@@ -1,0 +1,76 @@
+{% load i18n %}
+
+<nav id="site-navigation" class="main-navigation" role="navigation">
+    <!-- 移动端菜单切换按钮 -->
+    <button class="menu-toggle" aria-label="切换菜单" onclick="toggleMobileMenu()">
+        <i class="fa fa-bars"></i>
+    </button>
+    
+    <div class="menu-container">
+        <ul class="nav-menu">
+            <li class="menu-item home-item">
+                <a href="/" title="{{ SITE_NAME }}" rel="home">
+                    <i class="fa fa-home"></i>
+                    <span>{% trans 'index' %}</span>
+                </a>
+            </li>
+
+            {% load blog_tags %}
+            {% query nav_category_list parent_category=None as root_categorys %}
+            {% for node in root_categorys %}
+                <li class="menu-item">
+                    <a href="{{ node.get_absolute_url }}">
+                        {{ node.name }}
+                    </a>
+                </li>
+            {% endfor %}
+            {% if nav_pages %}
+                {% for node in nav_pages %}
+                    <li class="menu-item">
+                        <a href="{{ node.get_absolute_url }}">
+                            {{ node.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+            <li class="menu-item archive-item">
+                <a href="{% url "blog:archives" %}">
+                    <i class="fa fa-archive"></i>
+                    <span>{% trans 'Article archive' %}</span>
+                </a>
+            </li>
+            
+            <!-- 主题切换按钮 -->
+            <li class="menu-item theme-toggle">
+                <a href="javascript:void(0)" onclick="toggleTheme()" title="切换主题" class="theme-toggle-link">
+                    <i class="fa fa-moon-o" id="theme-icon"></i>
+                    <span class="hide-mobile">主题</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav><!-- #site-navigation -->
+
+<!-- 主题切换脚本 -->
+<script>
+function toggleMobileMenu() {
+    var navMenu = document.querySelector('.nav-menu');
+    navMenu.classList.toggle('toggled-on');
+}
+
+function toggleTheme() {
+    var html = document.documentElement;
+    var icon = document.getElementById('theme-icon');
+    var currentTheme = html.getAttribute('data-theme');
+    
+    if (currentTheme === 'dark') {
+        html.setAttribute('data-theme', 'light');
+        if (icon) icon.className = 'fa fa-moon-o';
+        localStorage.setItem('theme', 'light');
+    } else {
+        html.setAttribute('data-theme', 'dark');
+        if (icon) icon.className = 'fa fa-sun-o';
+        localStorage.setItem('theme', 'dark');
+    }
+}
+</script>

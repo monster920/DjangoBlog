@@ -1,0 +1,248 @@
+{% extends 'share_layout/base.html' %}
+{% load blog_tags %}
+
+{% block header %}
+  <style>
+    .article-container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: var(--space-xl) var(--space-md);
+    }
+    
+    .article-wrapper {
+      display: flex;
+      gap: var(--space-xl);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .article-main {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .article-sidebar {
+      width: 320px;
+      flex-shrink: 0;
+    }
+    
+    @media (max-width: 1024px) {
+      .article-sidebar { width: 280px; }
+    }
+    
+    @media (max-width: 900px) {
+      .article-wrapper { flex-direction: column; }
+      .article-sidebar { width: 100%; order: 1; }
+      .article-main { order: 0; }
+    }
+    
+    .article-header { margin-bottom: var(--space-lg); }
+    
+    .article-title {
+      font-size: var(--font-size-3xl);
+      line-height: var(--line-height-tight);
+      margin-bottom: var(--space-md);
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+    
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .article-meta-item { display: inline-flex; align-items: center; gap: var(--space-xs); }
+    .article-meta-item i { color: var(--color-primary); }
+    
+    .article-tags {
+      margin-bottom: var(--space-lg);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+    
+    .article-tag {
+      display: inline-block;
+      background-color: var(--color-primary-subtle);
+      color: var(--color-primary);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--border-radius-sm);
+      font-size: var(--font-size-sm);
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+    
+    .article-tag:hover {
+      background-color: var(--color-primary);
+      color: var(--text-light);
+    }
+    
+    .article-summary {
+      background: linear-gradient(135deg, var(--color-primary-subtle) 0%, rgba(0, 191, 255, 0.05) 100%);
+      border-left: 4px solid var(--color-primary);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-xl);
+      border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    }
+    
+    .article-summary p {
+      font-style: normal;
+      color: var(--text-secondary);
+      margin: 0;
+      font-size: var(--font-size-base);
+      line-height: 1.7;
+    }
+    
+    .article-content {
+      background-color: var(--bg-card);
+      padding: var(--space-xl);
+      border-radius: var(--border-radius-md);
+      line-height: var(--line-height-relaxed);
+    }
+    
+    .article-nav {
+      margin: var(--space-xl) 0;
+      padding: var(--space-md);
+      background-color: var(--bg-card);
+      border-radius: var(--border-radius-md);
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-md);
+    }
+    
+    .article-nav-link {
+      display: block;
+      padding: var(--space-md);
+      background-color: var(--bg-card-hover);
+      border-radius: var(--border-radius-sm);
+      color: var(--text-light);
+      text-decoration: none;
+      transition: all var(--transition-base);
+      flex: 1;
+      text-align: center;
+    }
+    
+    .article-nav-link:hover {
+      background-color: var(--color-primary);
+      transform: translateY(-2px);
+    }
+    
+    .article-nav-label {
+      font-size: var(--font-size-sm);
+      color: var(--color-primary);
+      display: block;
+      margin-bottom: var(--space-xs);
+    }
+    
+    .article-nav-link:hover .article-nav-label { color: var(--text-light); }
+    .article-nav-title { font-size: var(--font-size-sm); word-break: break-all; }
+    .nav-previous { text-align: left; }
+    .nav-next { text-align: right; }
+    
+    .comments-section { margin-top: var(--space-2xl); }
+    .comments-header { margin-bottom: var(--space-lg); }
+    .comments-title { color: var(--text-light); font-size: var(--font-size-xl); }
+    
+    .login-prompt {
+      padding: var(--space-lg);
+      background-color: var(--bg-card);
+      border-radius: var(--border-radius-md);
+      margin-top: var(--space-lg);
+      border: 1px solid var(--border-color);
+    }
+    
+    .login-prompt h4 { color: var(--text-secondary); margin-bottom: var(--space-md); }
+    .login-prompt a { color: var(--color-primary); font-weight: 500; }
+    
+    @media (max-width: 768px) {
+      .article-container { padding: var(--space-md); }
+      .article-title { font-size: var(--font-size-2xl); }
+      .article-meta { flex-direction: column; gap: var(--space-sm); }
+      .article-nav { flex-direction: column; }
+      .article-content { padding: var(--space-md); }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+    <div id="primary" class="site-content article-container">
+      <div class="article-wrapper">
+        <div class="article-main">
+          <article class="hentry">
+              <header class="article-header">
+                  <h1 class="article-title">{{ article.title }}</h1>
+                  <div class="article-meta">
+                      <span class="article-meta-item"><i class="fa fa-calendar"></i> {{ article.last_modify_time|date:"Y-m-d" }}</span>
+                      <span class="article-meta-item"><i class="fa fa-eye"></i> {{ article.views }}</span>
+                      <span class="article-meta-item"><i class="fa fa-clock-o"></i> {{ article.body|wordcount|divide:300 }} 分钟</span>
+                      <span class="article-meta-item"><i class="fa fa-map-marker"></i> 广东</span>
+                  </div>
+                  <div class="article-tags">
+                      {% for tag in article.tags.all %}
+                          <a href="{{ tag.get_absolute_url }}" class="article-tag">{{ tag.name }}</a>
+                      {% endfor %}
+                  </div>
+              </header>
+              
+              {% if article.summary %}
+              <div class="article-summary">
+                  <p>{{ article.summary|default:"暂无摘要" }}</p>
+              </div>
+              {% endif %}
+              
+              <div class="article-content">
+                  {% render_article_content article %}
+              </div>
+
+          {% if article.type == 'a' %}
+              <nav class="article-nav">
+                  {% if next_article %}
+                      <span class="nav-previous">
+                          <a href="{{ next_article.get_absolute_url }}" rel="prev" class="article-nav-link">
+                              <span class="article-nav-label">← 上一篇</span>
+                              <span class="article-nav-title">{{ next_article.title }}</span>
+                          </a>
+                      </span>
+                  {% endif %}
+                  {% if prev_article %}
+                      <span class="nav-next">
+                          <a href="{{ prev_article.get_absolute_url }}" rel="next" class="article-nav-link">
+                              <span class="article-nav-label">下一篇 →</span>
+                              <span class="article-nav-title">{{ prev_article.title }}</span>
+                          </a>
+                      </span>
+                  {% endif %}
+              </nav>
+          {% endif %}
+          </article>
+          
+          {% if article.comment_status == "o" and OPEN_SITE_COMMENT %}
+              <div class="comments-section">
+                  <div class="comments-header">
+                      <h3 class="comments-title">评论 ({{ comment_count }})</h3>
+                  </div>
+                  {% include 'comments/tags/comment_list.html' %}
+                  {% if user.is_authenticated %}
+                      {% include 'comments/tags/post_comment.html' %}
+                  {% else %}
+                      <div class="login-prompt">
+                          <h4>您还没有登录，请您<a href="{% url 'account:login' %}?next={{ request.get_full_path }}" rel="nofollow">登录</a>后发表评论。</h4>
+                          {% load oauth_tags %}{% load_oauth_applications request %}
+                      </div>
+                  {% endif %}
+              </div>
+          {% endif %}
+        </div>
+        
+        <aside class="article-sidebar">
+          {% load_sidebar user "p" %}
+        </aside>
+      </div>
+    </div>
+{% endblock %}
