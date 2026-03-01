@@ -58,6 +58,16 @@ function toggleMobileMenu() {
     navMenu.classList.toggle('toggled-on');
 }
 
+// 页面加载时初始化主题图标
+(function() {
+    var savedTheme = localStorage.getItem('theme') || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var icon = document.getElementById('theme-icon');
+    if (icon) {
+        icon.className = savedTheme === 'dark' ? 'fa fa-sun-o' : 'fa fa-moon-o';
+    }
+})();
+
 function toggleTheme() {
     var html = document.documentElement;
     var icon = document.getElementById('theme-icon');

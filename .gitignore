@@ -57,6 +57,11 @@ Thumbs.db
 # Docker data
 DjangoBlog/deploy/docker-compose/bin/datas/
 
+# Screenshots
+*.png
+*.jpg
+*.jpeg
+
 # Temporary files
 *.tmp
 *.temp

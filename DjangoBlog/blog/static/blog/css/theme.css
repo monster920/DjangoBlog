@@ -11,17 +11,17 @@
    ============================================ */
 
 :root {
-  /* ---------- 主色调 ---------- */
-  --color-primary: #00bfff !important;
-  --color-primary-hover: #0098e0 !important;
-  --color-primary-light: rgba(0, 191, 255, 0.15) !important;
-  --color-primary-subtle: rgba(0, 191, 255, 0.1) !important;
+  /* ---------- 主色调 (现代蓝) ---------- */
+  --color-primary: #3b82f6 !important;
+  --color-primary-hover: #2563eb !important;
+  --color-primary-light: rgba(59, 130, 246, 0.15) !important;
+  --color-primary-subtle: rgba(59, 130, 246, 0.1) !important;
   
   /* ---------- 辅助色 ---------- */
-  --color-success: #28a745 !important;
-  --color-warning: #ffc107 !important;
-  --color-danger: #dc3545 !important;
-  --color-info: #17a2b8 !important;
+  --color-success: #10b981 !important;
+  --color-warning: #f59e0b !important;
+  --color-danger: #ef4444 !important;
+  --color-info: #06b6d4 !important;
   
   /* ---------- 背景色 (浅色模式) ---------- */
   --bg-body: #e6e6e6 !important;
@@ -103,6 +103,11 @@
    ============================================ */
 
 [data-theme="dark"] {
+  --color-primary: #60a5fa !important;
+  --color-primary-hover: #93c5fd !important;
+  --color-primary-light: rgba(96, 165, 250, 0.15) !important;
+  --color-primary-subtle: rgba(96, 165, 250, 0.1) !important;
+  
   --bg-body: #1a1a2e !important;
   --bg-site: #16213e !important;
   --bg-card: rgba(30, 30, 50, 0.85) !important;
@@ -933,4 +938,249 @@ pre.code-block a:hover {
   font-family: 'FontAwesome';
   color: white;
   font-size: 20px;
+}
+
+/* ============================================
+   移动端优化增强
+   ============================================ */
+
+/* 移动端基础间距优化 */
+@media (max-width: 768px) {
+  /* 内容区域间距 */
+  .site-content,
+  #main,
+  .content-area {
+    padding-left: var(--space-md) !important;
+    padding-right: var(--space-md) !important;
+    padding-top: var(--space-md) !important;
+  }
+  
+  /* 文章卡片间距 */
+  .post,
+  .article-card,
+  .entry-card {
+    margin-bottom: var(--space-lg) !important;
+    padding: var(--space-md) !important;
+  }
+  
+  /* 侧边栏移动端样式 */
+  #secondary aside,
+  .sidebar-widget {
+    margin-bottom: var(--space-lg) !important;
+    padding: var(--space-md) !important;
+  }
+  
+  /* 标题大小调整 */
+  h1, .entry-title {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  h3 {
+    font-size: 1.1rem !important;
+  }
+  
+  /* 移动端导航菜单项增加触摸区域 */
+  .nav-menu a,
+  .menu-item a {
+    padding: var(--space-sm) var(--space-md) !important;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* 移动端搜索框 */
+  .search-input-wrapper {
+    padding: var(--space-xs);
+  }
+  
+  .search-input-wrapper input[type="text"] {
+    padding: var(--space-sm) !important;
+    font-size: 16px !important; /* 防止iOS缩放 */
+  }
+  
+  /* 移动端文章内容 */
+  .article-content,
+  .entry-content {
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+  }
+  
+  .article-content p,
+  .entry-content p {
+    margin-bottom: var(--space-md) !important;
+  }
+  
+  /* 代码块移动端 */
+  .article-content pre,
+  pre.code-block {
+    padding: var(--space-sm) !important;
+    font-size: 0.85rem !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* 图片响应式 */
+  .article-content img,
+  .entry-content img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* 移动端表格 */
+  .article-content table,
+  .entry-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* 超小屏幕优化 */
+@media (max-width: 480px) {
+  .site-content,
+  #main,
+  .content-area {
+    padding-left: var(--space-sm) !important;
+    padding-right: var(--space-sm) !important;
+  }
+  
+  h1, .entry-title {
+    font-size: 1.25rem !important;
+  }
+  
+  /* 底部返回按钮 */
+  #rocket {
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 44px !important;
+    height: 44px !important;
+  }
+  
+  /* 页脚链接 */
+  footer a {
+    padding: var(--space-xs) !important;
+  }
+}
+
+/* ============================================
+   悬停交互效果增强
+   ============================================ */
+
+/* 卡片悬停效果 */
+.post:hover,
+.article-card:hover,
+.entry-card:hover,
+.sidebar-widget:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg) !important;
+  transition: all var(--transition-base);
+}
+
+/* 链接悬停效果增强 */
+a {
+  transition: color var(--transition-fast), 
+              background-color var(--transition-fast),
+              border-color var(--transition-fast);
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* 按钮悬停效果 */
+button,
+input[type="submit"],
+.btn,
+.button {
+  transition: all var(--transition-fast) !important;
+}
+
+button:hover,
+input[type="submit"]:hover,
+.btn:hover,
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* 导航项悬停 */
+.nav-menu li a:hover,
+.menu-item a:hover {
+  background-color: var(--color-primary-subtle) !important;
+  border-radius: var(--border-radius-sm) !important;
+}
+
+/* ============================================
+   文章摘要截断优化
+   ============================================ */
+
+/* 摘要容器 */
+.entry-summary,
+.article-summary,
+.post-excerpt {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-height: 1.6 !important;
+  color: var(--text-secondary);
+}
+
+/* 如果需要显示更多，使用此类 */
+.entry-summary.expanded,
+.article-summary.expanded,
+.post-excerpt.expanded {
+  -webkit-line-clamp: unset;
+}
+
+/* 移动端摘要行数减少 */
+@media (max-width: 768px) {
+  .entry-summary,
+  .article-summary,
+  .post-excerpt {
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* ============================================
+   标题层级视觉区分
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+  line-height: var(--line-height-tight);
+  margin-bottom: var(--space-sm);
+}
+
+h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: var(--space-sm);
+  display: inline-block;
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+  color: var(--text-primary);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
+}
+
+h4, h5, h6 {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+}
+
+/* 暗色模式标题优化 */
+[data-theme="dark"] h1 {
+  border-bottom-color: var(--color-primary);
 }
