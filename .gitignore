@@ -50,6 +50,13 @@ uploads/
 .DS_Store
 Thumbs.db
 
+# Database
+*.db
+*.sqlite3
+
+# Docker data
+DjangoBlog/deploy/docker-compose/bin/datas/
+
 # Temporary files
 *.tmp
 *.temp
